@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { getProfile } from "../../api/profile";
+
 interface Profile {
   name: string;
   roles: string[];
@@ -20,6 +21,8 @@ interface Profile {
 const Hero = () => {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [currentRole, setCurrentRole] = useState(0);
+  const [isBioExpanded, setIsBioExpanded] = useState(false);
+  const [bioToShow, setBioToShow] = useState("");
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -27,6 +30,15 @@ const Hero = () => {
         const profileData = await getProfile();
         console.log("Fetched profile:", profileData);
         setProfile(profileData);
+
+        // Initialize bio display
+        if (profileData?.bio) {
+          setBioToShow(
+            profileData.bio.length > 150
+              ? profileData.bio.substring(0, 150) + "..."
+              : profileData.bio
+          );
+        }
       } catch (error) {
         console.error("Failed to fetch profile", error);
       }
@@ -46,6 +58,17 @@ const Hero = () => {
 
     return () => clearInterval(interval);
   }, [roles.length]);
+
+  const toggleBio = () => {
+    if (!profile?.bio) return;
+
+    if (isBioExpanded) {
+      setBioToShow(profile.bio.substring(0, 150) + "...");
+    } else {
+      setBioToShow(profile.bio);
+    }
+    setIsBioExpanded(!isBioExpanded);
+  };
 
   return (
     <section id="home" className="pt-32 pb-20 px-4">
@@ -81,14 +104,24 @@ const Hero = () => {
             </motion.span>
           </motion.div>
 
-          <motion.p
+          <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
-            className="text-zinc-300 mb-8 text-lg max-w-lg"
+            className="mb-8 max-w-lg"
           >
-            {profile?.bio}
-          </motion.p>
+            <p className="text-zinc-300 text-lg">
+              {bioToShow}
+              {profile?.bio && profile.bio.length > 150 && (
+                <button
+                  onClick={toggleBio}
+                  className="ml-2 text-amber-400 hover:text-amber-300 font-medium transition-colors duration-200"
+                >
+                  {isBioExpanded ? "Read Less" : "Read More"}
+                </button>
+              )}
+            </p>
+          </motion.div>
 
           <motion.div
             initial={{ opacity: 0, x: -50 }}
@@ -125,7 +158,7 @@ const Hero = () => {
             <div className="absolute inset-0 bg-gradient-to-r from-amber-500/30 to-amber-600/30 rounded-full blur-xl"></div>
             <div className="relative rounded-full overflow-hidden border-4 border-zinc-700 shadow-2xl">
               <img
-                src="/profile.png "
+                src={profile?.avatarUrl}
                 alt={profile?.name}
                 className="w-full h-full object-cover"
               />
