@@ -71,7 +71,7 @@ const Hero = () => {
   };
 
   return (
-    <section id="home" className="pt-32 pb-20 px-4">
+    <section id="home" className="pt-32 pb-20 px-60 ">
       <div className="container mx-auto flex flex-col md:flex-row items-center">
         <div className="md:w-1/2 mb-10 md:mb-0">
           <motion.h1
@@ -154,7 +154,7 @@ const Hero = () => {
           transition={{ duration: 0.5, delay: 0.3 }}
           className="md:w-1/2 flex justify-center"
         >
-          <div className="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96">
+          <div className="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 ">
             <div className="absolute inset-0 bg-gradient-to-r from-amber-500/30 to-amber-600/30 rounded-full blur-xl"></div>
             <div className="relative rounded-full overflow-hidden border-4 border-zinc-700 shadow-2xl">
               <img
