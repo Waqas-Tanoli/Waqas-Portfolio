@@ -67,7 +67,11 @@ const Header = () => {
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="hidden md:block px-6 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-zinc-900 font-medium rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+          onClick={() => {
+            const section = document.getElementById("contact");
+            section?.scrollIntoView({ behavior: "smooth" });
+          }}
+          className="hidden md:block px-6 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-zinc-900 font-medium rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:cursor-pointer"
         >
           Contact Me
         </motion.button>
